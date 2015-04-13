@@ -1,0 +1,9 @@
+.kdev4
+*.kdev4
+**/.directory
+.kateproject*
+/vendor
+composer.phar
+composer.lock
+.DS_Store
+Thumbs.db

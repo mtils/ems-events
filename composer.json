@@ -1,0 +1,26 @@
+{
+  "name": "ems/signal",
+  "type": "library",
+  "description": "A generic core library to work with different event systems in php",
+  "keywords": ["events", "ioc"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael Tils",
+      "email": "mtils@web-utils.de",
+      "homepage": "http://web-utils.de"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "mockery/mockery": "~0.9"
+  },
+  "autoload": {
+    "psr-0": {
+      "Signal": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
