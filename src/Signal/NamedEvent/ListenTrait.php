@@ -1,6 +1,6 @@
 <?php namespace Signal\NamedEvent;
 
-use Signal\NamedEvent\Distributor;
+use Signal\Contracts\NamedEvent\Distributor;
 
 trait ListenTrait{
 
@@ -19,7 +19,7 @@ trait ListenTrait{
      **/
     public function listen($events, $listener, $priority=0)
     {
-        return $this->getEventBus()->listen($events, $listener, $priority);
+        return $this->getDistributor()->listen($events, $listener, $priority);
     }
 
     /**
@@ -29,6 +29,9 @@ trait ListenTrait{
      **/
     public function getDistributor()
     {
+        if(!$this->distributor){
+            $this->distributor = new Bus();
+        }
         return $this->distributor;
     }
 

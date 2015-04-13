@@ -175,15 +175,85 @@ class BusTest extends PHPUnit_Framework_TestCase{
 
         $this->assertEquals(
             [
-                $closure->shouldReturn,
+                $closure2->shouldReturn,
                 $closure3->shouldReturn,
-                $closure2->shouldReturn
+                $closure->shouldReturn
             ],
             $bus->fire($eventName, [])
         );
 
+    }
+
+    public function testWildcardListenTriggersClosure()
+    {
+        $closure = $this->newClosure();
+        $closure->shouldReturn = 'test1';
+        $bus = $this->newBus();
+
+        $eventName = 'auth.login';
+
+        $bus->listen('auth.*', $closure, 0);
+        $bus->listen('auth.*', $closure, 0);
+
+        $bus->fire($eventName, ['test']);
+
+        $this->assertEquals('test', $closure[0]);
+        $this->assertEquals(2, $closure->callCount);
+
+    }
+
+    public function testWildcardListenDoesNotTriggerClosureIfNotMatched()
+    {
+        $closure = $this->newClosure();
+        $closure->shouldReturn = 'test1';
+        $bus = $this->newBus();
+
+        $eventName = 'auth.login';
+
+        $bus->listen('authi.*', $closure, 0);
+
+        $bus->fire($eventName, ['test']);
+
         $this->assertEquals(0, $closure->callCount);
-        $this->assertEquals(0, $closure2->callCount);
+
+    }
+
+    public function testMixedWildcardAndExplicitPriority()
+    {
+        $closure = $this->newClosure();
+        $closure->shouldReturn = 'test1';
+        $closure2 = $this->newClosure();
+        $closure2->shouldReturn = 'test2';
+        $closure3 = $this->newClosure();
+        $closure3->shouldReturn = 'test3';
+        $bus = $this->newBus();
+
+        $eventName = 'auth.login';
+
+        $bus->listen('auth.login', $closure,   0);
+        $bus->listen('auth.*',     $closure2,  4);
+        $bus->listen('auth.login', $closure3, 18);
+
+        $bus->fire($eventName, ['test']);
+
+        $this->assertEquals(
+            [
+                $closure3->shouldReturn,
+                $closure2->shouldReturn,
+                $closure->shouldReturn
+            ],
+            $bus->fire($eventName, ['test'])
+        );
+
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     **/
+    public function testListenWithoutCallableThrowsException()
+    {
+        $bus = $this->newBus();
+        $bus->listen('some-event', 'string');
     }
 
     public function newBus()

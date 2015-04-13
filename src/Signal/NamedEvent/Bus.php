@@ -1,5 +1,8 @@
 <?php namespace Signal\NamedEvent;
 
+
+use InvalidArgumentException;
+
 use Signal\Contracts\NamedEvent\Bus as BusInterface;
 
 class Bus implements BusInterface
@@ -62,6 +65,11 @@ class Bus implements BusInterface
      **/
     public function listen($events, $listener, $priority=0)
     {
+
+        if (!is_callable($listener)) {
+            throw new InvalidArgumentException('Listener has to be callable');
+        }
+
         foreach ((array)$events as $event) {
 
             if ($this->isWildcardSyntax($event)){
@@ -84,12 +92,13 @@ class Bus implements BusInterface
 
     protected function getListeners($event)
     {
-        $listeners = array_merge(
-            $this->getExplicitListeners($event),
-            $this->getWildcardListeners($event)
-        );
-        print_r(array_keys($listeners));
+        $explicitListeners = $this->getExplicitListeners($event);
+        $wildCardListeners = $this->getWildcardListeners($event);
+
+        $listeners = $explicitListeners + $wildCardListeners;
+
         krsort($listeners);
+
         return $listeners;
 
     }
@@ -108,13 +117,25 @@ class Bus implements BusInterface
 
     protected function getWildcardListeners($event)
     {
+
         $listeners = [];
-        foreach ($this->wildCardListeners as $wildcard=>$priority) {
-            if ($this->wildCardMatchesEvent($wildcard, $event)) {
-                $listeners[$priority] = 
-                    $this->wildCardListeners[$priority][$wildcard];
+
+        foreach ($this->wildCardListeners as $wildcard=>$closureArray) {
+
+            if (!$this->wildCardMatchesEvent($wildcard, $event)) {
+                continue;
             }
+
+            foreach ($closureArray as $priority=>$closure) {
+                $listeners[$priority] = $closure;
+            }
+
         }
+
+        if (!$listeners) {
+            return [$listeners];
+        }
+
         return $listeners;
     }
 
