@@ -31,7 +31,7 @@ trait BusHolderTrait{
      * @param \Signal\Contracts\NamedEvent\Bus $eventBus
      * @return self
      **/
-    public function setEventBus(BusInterface $eventBus)
+    public function setEventBus(Bus $eventBus)
     {
         $this->eventBus = $eventBus;
         return $this;
