@@ -1,6 +1,6 @@
 <?php namespace Signal\NamedEvent;
 
-use Signal\Contracts\NamedEvent\Bus;
+use Signal\Contracts\NamedEvent\Bus as BusInterface;
 
 trait BusHolderTrait{
 
@@ -20,7 +20,7 @@ trait BusHolderTrait{
     public function getEventBus()
     {
         if (!$this->eventBus) {
-            $this->eventBus = new SilentBus;
+            $this->eventBus = new Bus;
         }
         return $this->eventBus;
     }
@@ -31,7 +31,7 @@ trait BusHolderTrait{
      * @param \Signal\Contracts\NamedEvent\Bus $eventBus
      * @return self
      **/
-    public function setEventBus(Bus $eventBus)
+    public function setEventBus(BusInterface $eventBus)
     {
         $this->eventBus = $eventBus;
         return $this;

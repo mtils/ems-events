@@ -1,8 +1,8 @@
 <?php namespace Signal\NamedEvent;
 
-use Signal\Contracts\NamedEvent\Bus;
+use Signal\Contracts\NamedEvent\Bus as BusInterface;
 
-class SilentBus implements Bus
+class SilentBus implements BusInterface
 {
 
     /**

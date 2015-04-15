@@ -65,7 +65,7 @@ class Bus implements BusInterface
      **/
     public function listen($events, $listener, $priority=0)
     {
-
+echo "listen $events called";
         if (!is_callable($listener)) {
             throw new InvalidArgumentException('Listener has to be callable');
         }
