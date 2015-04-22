@@ -62,8 +62,36 @@ class BusHolderTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(
             $this->defaultBusClass,
-            $holder->getDispatcher()
+            $holder->getDistributor()
         );
+    }
+
+    public function testGetStaticEventBusReturnsSameInstanceOnTwoInstances()
+    {
+        $bus = new SilentBus();
+        $holder = new StaticBusHolder();
+        $holder2 = new StaticBusHolder();
+
+        StaticBusHolder::setStaticEventBus($bus);
+
+        $this->assertSame($bus, StaticBusHolder::getStaticEventBus());
+
+        $this->assertSame($bus, $holder->getEventBus());
+        $this->assertSame($bus, $holder2->getEventBus());
+
+    }
+
+    public function testGetStaticEventBusReturnsSameInstanceInExtendedClass()
+    {
+        $bus = new SilentBus();
+        $holder = new StaticBusHolder();
+        $holder2 = new ExtendedStaticHolder();
+
+        StaticBusHolder::setStaticEventBus($bus);
+
+        $this->assertSame($bus, $holder->getEventBus());
+        $this->assertSame($bus, $holder2->getEventBus());
+
     }
 
     public function newHolder()
@@ -82,3 +110,11 @@ class BusHolder
 {
     use BusHolderTrait;
 }
+
+class StaticBusHolder
+{
+    use BusHolderTrait;
+    protected static $staticEventBus;
+}
+
+class ExtendedStaticHolder extends StaticBusHolder{};

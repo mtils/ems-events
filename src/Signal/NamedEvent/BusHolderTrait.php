@@ -20,6 +20,9 @@ trait BusHolderTrait{
     public function getEventBus()
     {
         if (!$this->eventBus) {
+            if (isset(static::$staticEventBus)) {
+                return static::$staticEventBus;
+            }
             $this->eventBus = new Bus;
         }
         return $this->eventBus;
@@ -35,6 +38,32 @@ trait BusHolderTrait{
     {
         $this->eventBus = $eventBus;
         return $this;
+    }
+
+    /**
+     * Get the static event bus
+     * @see self::setStaticEventBus()
+     *
+     * @return \Signal\Contracts\NamedEvent\Bus
+     **/
+    public static function getStaticEventBus()
+    {
+        return static::$staticEventBus;
+    }
+
+    /**
+     * Set a static event bus. You have to declare a static variable
+     * static $staticEventBus property to make this work. PHP traits do not
+     * allow static properties in traits.
+     * If you set one here all classes and subclasses will share the same event
+     * bus.
+     *
+     * @param \Signal\Contracts\NamedEvent\Bus
+     * @return void
+     **/
+    public static function setStaticEventBus(BusInterface $eventBus)
+    {
+        static::$staticEventBus = $eventBus;
     }
 
     /**
