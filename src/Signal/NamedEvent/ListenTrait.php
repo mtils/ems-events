@@ -2,12 +2,13 @@
 
 use Signal\Contracts\NamedEvent\Distributor;
 
-trait ListenTrait{
+trait ListenTrait
+{
 
     /**
      * @var \Signal\NamedEvent\Distributor
      **/
-    protected $distributor;
+    protected $_distributor;
 
     /**
      * Listen to event(s) $event
@@ -29,10 +30,10 @@ trait ListenTrait{
      **/
     public function getDistributor()
     {
-        if(!$this->distributor){
-            $this->distributor = new Bus();
+        if(!$this->_distributor){
+            $this->_distributor = new Bus();
         }
-        return $this->distributor;
+        return $this->_distributor;
     }
 
     /**
@@ -43,7 +44,7 @@ trait ListenTrait{
      **/
     public function setDistributor(Distributor $distributor)
     {
-        $this->distributor = $distributor;
+        $this->_distributor = $distributor;
         return $this;
     }
 
