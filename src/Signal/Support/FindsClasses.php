@@ -9,14 +9,26 @@ trait FindsClasses
 
     public function appendNamespace($namespace)
     {
+
         $this->_bootIfNotBooted();
-        $this->_namespaces[] = trim($namespace,'\\');
+        $namespace = trim($namespace,'\\');
+
+        if (in_array($namespace, $this->_namespaces)) {
+            return;
+        }
+
+        $this->_namespaces[] = $namespace;
     }
 
     public function prependNamespace($namespace)
     {
         $this->_bootIfNotBooted();
-        $this->_namespaces[] = trim($namespace,'\\');
+        $namespace = trim($namespace,'\\');
+
+        if (in_array($namespace, $this->_namespaces)) {
+            return;
+        }
+        $this->_namespaces[] = $namespace;
     }
 
     protected function cleanClassName($baseName)
