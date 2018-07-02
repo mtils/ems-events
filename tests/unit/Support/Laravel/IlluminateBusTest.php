@@ -3,8 +3,9 @@
 use Mockery as m;
 
 use Signal\Support\Laravel\IlluminateBus;
+use PHPUnit\Framework\TestCase;
 
-class IlluminateBusTest extends PHPUnit_Framework_TestCase{
+class IlluminateBusTest extends TestCase{
 
     public function testImplementsInterface(){
         $this->assertInstanceOf(

@@ -3,11 +3,12 @@
 use Mockery as m;
 
 use Signal\NamedEvent\Bus;
+use PHPUnit\Framework\TestCase;
 
 require_once __DIR__.'/../../helpers/TestClosure.php';
 
 
-class BusTest extends PHPUnit_Framework_TestCase{
+class BusTest extends TestCase{
 
     public function testImplementsInterface()
     {

@@ -4,8 +4,9 @@ use Mockery as m;
 
 use Signal\NamedEvent\BusHolderTrait;
 use Signal\NamedEvent\SilentBus;
+use PHPUnit\Framework\TestCase;
 
-class BusHolderTest extends PHPUnit_Framework_TestCase
+class BusHolderTest extends TestCase
 {
 
     protected $defaultBusClass = 'Signal\NamedEvent\Bus';

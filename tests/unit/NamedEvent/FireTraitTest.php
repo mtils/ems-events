@@ -3,8 +3,9 @@
 use Mockery as m;
 
 use Signal\NamedEvent\FireTrait;
+use PHPUnit\Framework\TestCase;
 
-class FireTraitTest extends PHPUnit_Framework_TestCase
+class FireTraitTest extends TestCase
 {
 
     public function testGetDispatcherReturnBusAsDefault()

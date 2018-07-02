@@ -3,8 +3,9 @@
 use Mockery as m;
 
 use Signal\NamedEvent\ListenTrait;
+use PHPUnit\Framework\TestCase;
 
-class ListenTraitTest extends PHPUnit_Framework_TestCase
+class ListenTraitTest extends TestCase
 {
 
     public function testGetDistributorReturnBusAsDefault()
